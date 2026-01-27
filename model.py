@@ -55,14 +55,15 @@ mistral_llm = initialize_model(MISTRAL_MODEL_ID)
 
 # OpenAI model
 openai_llm = ChatOpenAI(
-    api_key=OPENAI_API_KEY,
+    openai_api_key=OPENAI_API_KEY,
     model=OPENAI_MODEL_ID,
     temperature=PARAMETERS.get("temperature", 0.7),
 )
 
+
 # DeepSeek model (OpenAI-compatible)
 deepseek_llm = ChatOpenAI(
-    api_key=DEEPSEEK_API_KEY,
+    openai_api_key=DEEPSEEK_API_KEY,
     base_url=DEEPSEEK_BASE_URL,
     model=DEEPSEEK_MODEL_ID,
     temperature=PARAMETERS.get("temperature", 0.7),
