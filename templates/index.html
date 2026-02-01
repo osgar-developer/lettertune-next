@@ -408,6 +408,64 @@ background:
         margin-top: 10px;
         }
 
+       /* =========================
+          DONATION CARD
+        ========================= */
+
+        .donate-card{
+          margin-top: 24px;
+          text-align: center;
+        }
+
+        .donate-text{
+          color: var(--muted);
+          font-size: 14px;
+          margin: 8px 0 16px;
+          line-height: 1.5;
+        }
+
+        .donation-methods{
+          display: grid;
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+
+        .donation-item{
+          background: rgba(143,163,30,0.08);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 10px 12px;
+          font-size: 13px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .donation-item strong{
+          color: var(--accent-dark);
+          font-weight: 700;
+        }
+
+        .mono{
+          font-family: var(--mono);
+          word-break: break-all;
+        }
+
+        .donate-footer{
+          font-size: 13px;
+          color: var(--muted);
+        }
+
+        .donate-footer a{
+          color: var(--accent);
+          font-weight: 600;
+          text-decoration: none;
+        }
+
+        .donate-footer a:hover{
+          text-decoration: underline;
+        }
+
 
   </style>
 </head>
@@ -520,6 +578,57 @@ background:
 
         </div>
       </div>
+
+
+    <!-- DONATION CARD (place below the grid, near the bottom) -->
+    <div class="card donate-card">
+      <div class="card-inner">
+        <p class="section-title"><strong>Support LetterTune 💚</strong><span class="hint"></span></p>
+
+        <p class="donate-text">
+          If LetterTune helped you, consider supporting the project.
+          Your donation helps keep the service running and improving.
+        </p>
+
+        <div class="donation-methods">
+          <div class="donation-item">
+            <strong>PayPal</strong>
+
+            <a class="paypal-link" href="https://www.paypal.me/LetterTune" target="_blank" rel="noopener">
+              <!-- PayPal logo (SVG, no external image needed) -->
+              <svg width="72" height="20" viewBox="0 0 72 20" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal">
+                <path fill="#003087" d="M17.7 2.2C16.9 1.3 15.6 1 13.8 1H7.2c-.5 0-.9.4-1 .9L4 18.4c-.1.4.3.8.7.8h3.9l.9-5.5v.2c.1-.5.5-.9 1-.9h1.8c3.5 0 6.3-1.4 7.1-5.6.3-1.8.1-3.2-.8-4.2z"/>
+                <path fill="#009cde" d="M19 7c-.8 4.2-3.6 5.6-7.1 5.6h-1.8c-.5 0-.9.4-1 .9l-1 6c-.1.4.3.8.7.8h3.2c.4 0 .8-.3.9-.7v-.1l.8-4.8v-.2c.1-.4.5-.7.9-.7h.6c3.1 0 5.5-1.3 6.2-4.9.3-1.5.1-2.8-.7-3.7-.2-.2-.4-.4-.7-.5z"/>
+              </svg>
+
+              <span class="mono">paypal.me/LetterTune</span>
+            </a>
+          </div>
+
+          <div class="donation-item">
+            <strong>Ethereum (ETH)</strong>
+            <span class="mono">0xAbC1234567890abcdefABCDEF1234567890</span>
+          </div>
+
+          <div class="donation-item">
+            <strong>Bitcoin (BTC)</strong>
+            <span class="mono">bc1qexampleaddress1234567890example</span>
+          </div>
+
+          <div class="donation-item">
+            <strong>Solana (SOL)</strong>
+            <span class="mono">SoLanaExampleAddress1234567890ABCDE</span>
+          </div>
+        </div>
+
+        <p class="donate-footer">
+          Suggestions and ideas may be emailed to
+          <a href="mailto:info@lettertune.com">info@lettertune.com</a>
+        </p>
+      </div>
+    </div>
+
+
     </div>
   </div>
 
