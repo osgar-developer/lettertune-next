@@ -155,5 +155,14 @@ python-3.12.7
 
 ---
 
+## Live Demo
+
+A hosted version of LetterTune is available at:
+
+🌐 **https://lettertune.com**
+
+This public demo showcases the full end-to-end workflow, including model selection and style-based cover letter generation.
+
+
 ## License
 MIT
