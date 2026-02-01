@@ -19,6 +19,7 @@ It also includes a global generation limit stored persistently in Postgres.
 ---
 
 ## Features
+
 - Modern responsive UI (mobile-friendly)
 - Style imitation based on a previous cover letter
 - Five selectable AI providers
@@ -94,6 +95,7 @@ Open http://127.0.0.1:5000
 ---
 
 ## API Endpoints
+
 - GET / – UI
 - GET /health – health check
 - GET /usage – usage counter
@@ -115,6 +117,7 @@ Open http://127.0.0.1:5000
 ---
 
 ## Generation Limit
+
 Controlled by env var:
 ```
 MAX_GENERATIONS=500
@@ -149,6 +152,7 @@ python-3.12.7
 ---
 
 ## Security
+
 - Do not commit .env (keep it in .gitignore)
 - Use Render Environment Variables when deploying on Render
 - Set MAX_GENERATIONS Environmental Variable to a number of your choice to limit AI Model generations
@@ -165,4 +169,6 @@ This public demo showcases the full end-to-end workflow, including model selecti
 
 
 ## License
-MIT
+
+MIT © 2026 Jonas Bergman
+
