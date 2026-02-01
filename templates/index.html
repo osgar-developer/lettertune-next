@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LetterTune v1 — Cover Letter Creator</title>
+  <meta name="description" content="Create personalized cover letters using AI that mimics your own writing style. LetterTune combines job offers, resumes, and past letters to generate realistic applications." />
+  <title>LetterTune — Personalized Cover Letters</title>
 
   <style>
     :root{
@@ -379,7 +380,7 @@ background:
 
         .loader-wrapper{
         width: 100%;
-        height: 4px;
+        height: 8px;
         background: rgba(143,163,30,0.15);
         border-radius: 999px;
         overflow: hidden;
@@ -483,7 +484,7 @@ background:
     <header>
       <div class="card" style="width: 100%; background-color: white; padding: 12px; border-radius: 8px;">
         <!--<h1 class="title">LetterTune v1</h1>-->
-        <img src="static/images/logo.png" style="width: 50%;">
+        <img src="static/images/logo.png" style="width: 50%;" alt="LetterTune - Personalized Cover Letters">
 <!--         <p class="subtitle">
           Generate a personalized cover letter in your own style
         </p> -->
@@ -849,5 +850,16 @@ Mark Hamilton
       statusText.textContent = "Example loaded. Hit Generate →";
     });
   </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "LetterTune",
+  "url": "https://lettertune.com",
+  "applicationCategory": "BusinessApplication",
+  "description": "AI-powered cover letter generator that mimics your personal writing style."
+}
+</script>
+
 </body>
 </html>
