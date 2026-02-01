@@ -57,11 +57,11 @@ def generate():
     if not model_name:
         missing.append("model")
     if not company_job_info:
-        missing.append("company_job_info")
+        missing.append("Company + job offer info")
     if not applicant_background:
-        missing.append("applicant_background")
+        missing.append("Applicant background / resume")
     if not previous_cover_letter:
-        missing.append("previous_cover_letter")
+        missing.append("Previous cover letter (style reference)")
 
     if missing:
         return jsonify({
