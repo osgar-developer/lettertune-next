@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, end_from_directory, current_app
+
 from model import (
     llama_response,
     granite_response,
@@ -44,11 +45,13 @@ def usage():
 
 @app.route("/robots.txt")
 def robots():
-    return send_from_directory(app.static_folder, "robots.txt")
+    static_dir = os.path.join(current_app.root_path, "static")
+    return send_from_directory(static_dir, "robots.txt", mimetype="text/plain")
 
 @app.route("/sitemap.xml")
 def sitemap():
-    return send_from_directory(app.static_folder, "sitemap.xml")
+    static_dir = os.path.join(current_app.root_path, "static")
+    return send_from_directory(static_dir, "sitemap.xml", mimetype="application/xml")
 
 
 @app.route("/generate", methods=["POST"])
