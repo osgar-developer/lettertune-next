@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory, current_app
 import os
 
+from visit_logger import init_visit_table, log_visit
+
+
 
 from model import (
     llama_response,
@@ -21,6 +24,12 @@ import time
 
 app = Flask(__name__)
 
+try:
+    init_visit_table()
+except Exception as e:
+    print("⚠️ Visit table init failed:", e)
+
+
 # Initialize counter table on startup
 try:
     init_counter()
@@ -30,7 +39,12 @@ except Exception as e:
 
 @app.route("/", methods=["GET"])
 def index():
+    try:
+        log_visit(request)
+    except Exception as e:
+        print("⚠️ Visit log failed:", e)
     return render_template("index.html")
+
 
 
 @app.route("/health", methods=["GET"])
