@@ -115,21 +115,36 @@ async function callWatsonx(
   }
 
   // Try to extract JSON from the response
-  // First try direct JSON parse
-  try {
-    return JSON.parse(generatedText)
-  } catch {
-    // If direct parse fails, try to extract JSON from text
-    const jsonMatch = generatedText.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      try {
-        return JSON.parse(jsonMatch[0])
-      } catch {
-        throw new Error(`Failed to parse AI response as JSON. Response: ${generatedText.substring(0, 500)}`)
+  // Handle cases where response includes markdown code blocks or text before JSON
+  function extractJSON(text: string): CoverLetterResponse {
+    // Try direct parse first
+    try {
+      return JSON.parse(text)
+    } catch {
+      // Try to find JSON in markdown code blocks
+      const codeBlockMatch = text.match(/```json\s*([\s\S]*?)\s*```/)
+      if (codeBlockMatch) {
+        try {
+          return JSON.parse(codeBlockMatch[1])
+        } catch {
+          // Continue to next method
+        }
       }
+      
+      // Try to find any JSON object in the text
+      const jsonMatch = text.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        try {
+          return JSON.parse(jsonMatch[0])
+        } catch {
+          throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+        }
+      }
+      throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
     }
-    throw new Error(`Failed to parse AI response as JSON. Response: ${generatedText.substring(0, 500)}`)
   }
+  
+  return extractJSON(generatedText)
 }
 
 // Call OpenAI API
@@ -169,19 +184,29 @@ async function callOpenAI(
   }
 
   // Try to extract JSON from the response
-  try {
-    return JSON.parse(content)
-  } catch {
-    const jsonMatch = content.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      try {
-        return JSON.parse(jsonMatch[0])
-      } catch {
-        throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
+  function extractJSON(text: string): CoverLetterResponse {
+    try {
+      return JSON.parse(text)
+    } catch {
+      const codeBlockMatch = text.match(/```json\s*([\s\S]*?)\s*```/)
+      if (codeBlockMatch) {
+        try {
+          return JSON.parse(codeBlockMatch[1])
+        } catch { }
       }
+      const jsonMatch = text.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        try {
+          return JSON.parse(jsonMatch[0])
+        } catch {
+          throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+        }
+      }
+      throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
     }
-    throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
   }
+  
+  return extractJSON(content)
 }
 
 // Call DeepSeek API (OpenAI-compatible)
@@ -220,19 +245,29 @@ async function callDeepSeek(
   }
 
   // Try to extract JSON from the response
-  try {
-    return JSON.parse(content)
-  } catch {
-    const jsonMatch = content.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      try {
-        return JSON.parse(jsonMatch[0])
-      } catch {
-        throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
+  function extractJSON(text: string): CoverLetterResponse {
+    try {
+      return JSON.parse(text)
+    } catch {
+      const codeBlockMatch = text.match(/```json\s*([\s\S]*?)\s*```/)
+      if (codeBlockMatch) {
+        try {
+          return JSON.parse(codeBlockMatch[1])
+        } catch { }
       }
+      const jsonMatch = text.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        try {
+          return JSON.parse(jsonMatch[0])
+        } catch {
+          throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+        }
+      }
+      throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
     }
-    throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
   }
+  
+  return extractJSON(content)
 }
 
 // Main generate function
