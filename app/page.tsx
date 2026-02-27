@@ -69,7 +69,7 @@ export default function Home() {
       <div className="w-full max-w-[980px] flex flex-col gap-[18px]">
         <Header />
 
-        <div style={{ marginBottom: '20px' }}></div>
+        <div style={{ marginBottom: '8px' }}></div>
 
         {error && (
           <div
@@ -100,7 +100,7 @@ export default function Home() {
         </div>
 
         <DonationCard />
-        <div style={{ marginBottom: '30px' }}></div>
+        <div style={{ marginBottom: '10px' }}></div>
       </div>
     </main>
   )
