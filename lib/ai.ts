@@ -91,11 +91,7 @@ async function callWatsonx(
     body: JSON.stringify({
       project_id: WATSONX_CONFIG.projectId,
       model_id: modelId,
-      inputs: [
-        {
-          text: `${systemPrompt}\n\n${JSON_SCHEMA_INSTRUCTIONS}\n\n${userPrompt}`,
-        },
-      ],
+      input: `${systemPrompt}\n\n${JSON_SCHEMA_INSTRUCTIONS}\n\n${userPrompt}`,
       parameters: {
         decoding_method: 'greedy',
         max_new_tokens: 356,
