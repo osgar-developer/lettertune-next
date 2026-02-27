@@ -77,3 +77,6 @@ htmlcov/
 # Optional: local config
 config.local.py
 settings.local.py
+
+# Legacy / archived
+_old/
