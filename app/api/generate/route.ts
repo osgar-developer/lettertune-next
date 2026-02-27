@@ -1,23 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { generateCoverLetter } from '@/lib/ai'
+import { GeneratePayload, GenerateResponse } from '@/lib/types'
 
-// Mock response for demo purposes
-// In production, this would call the actual AI models (Watsonx, OpenAI, DeepSeek)
-// Similar to the Flask model's generate functions
-
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse<GenerateResponse | { error: string; missing_fields?: string[] }>> {
   try {
-    const data = await request.json()
+    const data: GeneratePayload = await request.json()
 
-    const {
-      model,
-      company_job_info,
-      applicant_background,
-      previous_cover_letter,
-      additional_instructions,
-    } = data
+    const { model, company_job_info, applicant_background, previous_cover_letter, additional_instructions } = data
 
     // Validation
-    const missing = []
+    const missing: string[] = []
     if (!model) missing.push('model')
     if (!company_job_info) missing.push('Company + job offer info')
     if (!applicant_background) missing.push('Applicant background / resume')
@@ -30,42 +22,52 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // For now, return a mock response
-    // TODO: Integrate actual AI models (Watsonx, OpenAI, DeepSeek)
-    // The logic from model.py needs to be ported to TypeScript
-    
-    const mockCoverLetter = `Dear Hiring Team,
+    // Get API keys from environment
+    const env = {
+      WATSONX_API_KEY: process.env.WATSONX_API_KEY,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+      DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
+    }
 
-Thank you for considering my application for the position. I am excited about the opportunity to contribute to your team and believe my background aligns well with your requirements.
+    // Check if at least one API key is configured
+    if (!env.WATSONX_API_KEY && !env.OPENAI_API_KEY && !env.DEEPSEEK_API_KEY) {
+      return NextResponse.json(
+        { error: 'No AI API keys configured. Please set WATSONX_API_KEY, OPENAI_API_KEY, or DEEPSEEK_API_KEY in environment variables.' },
+        { status: 500 }
+      )
+    }
 
-Based on my experience in business administration and my internship at Volksbank Nord eG, I have developed strong skills in customer communication, data entry, and financial documentation. I am particularly drawn to your bank's mission of providing reliable financial services to the local community.
+    // Time the generation
+    const startTime = Date.now()
 
-I would welcome the opportunity to discuss how my skills and motivation can contribute to your team.
+    // Call the AI
+    const result = await generateCoverLetter(
+      {
+        model,
+        company_job_info,
+        applicant_background,
+        previous_cover_letter,
+        additional_instructions,
+      },
+      env
+    )
 
-Kind regards,
-[Your Name]`
+    const duration = (Date.now() - startTime) / 1000
 
-    const mockKeyMatches = [
-      'Business Administration degree',
-      'Banking operations experience',
-      'Customer communication skills',
-      'Financial documentation',
-      'Attention to detail',
-    ]
+    const response: GenerateResponse = {
+      cover_letter: result.cover_letter,
+      key_matches: result.key_matches,
+      style_notes: result.style_notes,
+      suggested_subject: result.suggested_subject,
+      model,
+      duration,
+      used: 1, // TODO: Implement actual usage tracking
+      limit: 100, // TODO: Implement actual limit
+    }
 
-    const mockStyleNotes = 'Professional yet warm tone, clear structure with introduction-body-conclusion, focuses on specific achievements and alignment with company values.'
-
-    return NextResponse.json({
-      cover_letter: mockCoverLetter,
-      key_matches: mockKeyMatches,
-      style_notes: mockStyleNotes,
-      suggested_subject: `Application for Banking Operations Position`,
-      model: model,
-      duration: 2.5,
-      used: 1,
-      limit: 100,
-    })
+    return NextResponse.json(response)
   } catch (error) {
+    console.error('Error generating cover letter:', error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
