@@ -24,15 +24,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateR
 
     // Get API keys from environment
     const env = {
-      WATSONX_API_KEY: process.env.WATSONX_API_KEY,
+      WATSONX_CREDENTIALS: process.env.WATSONX_CREDENTIALS,
       OPENAI_API_KEY: process.env.OPENAI_API_KEY,
       DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
     }
 
     // Check if at least one API key is configured
-    if (!env.WATSONX_API_KEY && !env.OPENAI_API_KEY && !env.DEEPSEEK_API_KEY) {
+    if (!env.WATSONX_CREDENTIALS && !env.OPENAI_API_KEY && !env.DEEPSEEK_API_KEY) {
       return NextResponse.json(
-        { error: 'No AI API keys configured. Please set WATSONX_API_KEY, OPENAI_API_KEY, or DEEPSEEK_API_KEY in environment variables.' },
+        { error: 'No AI API keys configured. Please set WATSONX_CREDENTIALS, OPENAI_API_KEY, or DEEPSEEK_API_KEY in environment variables.' },
         { status: 500 }
       )
     }

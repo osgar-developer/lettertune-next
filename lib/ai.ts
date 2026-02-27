@@ -185,7 +185,7 @@ async function callDeepSeek(
 export async function generateCoverLetter(
   payload: GeneratePayload,
   env: {
-    WATSONX_API_KEY?: string
+    WATSONX_CREDENTIALS?: string
     OPENAI_API_KEY?: string
     DEEPSEEK_API_KEY?: string
   }
@@ -197,11 +197,11 @@ export async function generateCoverLetter(
     case 'llama':
     case 'granite':
     case 'mistral': {
-      if (!env.WATSONX_API_KEY) {
-        throw new Error('WATSONX_API_KEY is not configured')
+      if (!env.WATSONX_CREDENTIALS) {
+        throw new Error('WATSONX_CREDENTIALS is not configured')
       }
       const modelId = WATSONX_CONFIG.modelIds[model as keyof typeof WATSONX_CONFIG.modelIds]
-      return callWatsonx(env.WATSONX_API_KEY, modelId, SYSTEM_PROMPT, userPrompt)
+      return callWatsonx(env.WATSONX_CREDENTIALS, modelId, SYSTEM_PROMPT, userPrompt)
     }
 
     case 'openai': {
