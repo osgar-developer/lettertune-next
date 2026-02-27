@@ -69,8 +69,6 @@ export default function Home() {
       <div className="w-full max-w-[980px] flex flex-col gap-[18px]">
         <Header />
 
-        <div style={{ marginBottom: '1px' }}></div>
-
         {error && (
           <div
             className="p-3 rounded-lg text-[12px]"
@@ -100,7 +98,6 @@ export default function Home() {
         </div>
 
         <DonationCard />
-        <div style={{ marginBottom: '1px' }}></div>
       </div>
     </main>
   )
