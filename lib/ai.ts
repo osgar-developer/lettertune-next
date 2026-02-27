@@ -54,6 +54,24 @@ const WATSONX_CONFIG = {
   },
 }
 
+// Get IBM IAM token
+async function getIBMToken(apiKey: string): Promise<string> {
+  const response = await fetch('https://iam.cloud.ibm.com/identity/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=${apiKey}`,
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to get IBM token: ${response.status}`)
+  }
+
+  const data = await response.json()
+  return data.access_token
+}
+
 // Call Watsonx API
 async function callWatsonx(
   apiKey: string,
@@ -61,11 +79,14 @@ async function callWatsonx(
   systemPrompt: string,
   userPrompt: string
 ): Promise<CoverLetterResponse> {
+  // Get IAM token first
+  const token = await getIBMToken(apiKey)
+
   const response = await fetch(`${WATSONX_CONFIG.url}/ml/v1/text/generation?version=2024-05-01`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
+      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify({
       project_id: WATSONX_CONFIG.projectId,
