@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import InputCard from '@/components/InputCard'
 import ResultCard from '@/components/ResultCard'
 import DonationCard from '@/components/DonationCard'
+import Loader from '@/components/Loader'
 
 interface GenerateResponse {
   cover_letter: string
@@ -65,7 +66,10 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen p-6 flex justify-center items-start">
+    <>
+      <Loader isLoading={isLoading} />
+
+      <main className="min-h-screen p-6 flex justify-center items-start">
       <div className="w-full max-w-[980px] flex flex-col gap-[18px]">
         <Header />
 
@@ -100,5 +104,6 @@ export default function Home() {
         <DonationCard />
       </div>
     </main>
+    </>
   )
 }
