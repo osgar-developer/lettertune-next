@@ -11,7 +11,8 @@ export default function Header() {
           width: '100%', 
           padding: '12px',
           border: '1px solid rgba(46, 125, 50, 0.15)',
-          borderRadius: '14px'
+          borderRadius: '14px',
+          backgroundColor: 'white'
         }}
       >
         <Image
