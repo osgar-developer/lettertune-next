@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import CoverLetterDisplay from './CoverLetterDisplay'
 import KeyMatches from './KeyMatches'
 import StyleNotes from './StyleNotes'
@@ -13,7 +14,7 @@ interface ResultCardProps {
   duration: number
   generationNumber: number
   limit: number
-  onCopy: () => void
+  onCopy: (content: string) => void
 }
 
 export default function ResultCard({
@@ -26,6 +27,21 @@ export default function ResultCard({
   limit,
   onCopy,
 }: ResultCardProps) {
+  const [editedContent, setEditedContent] = useState(coverLetter)
+
+  // Update edited content when a new cover letter is generated
+  if (coverLetter && coverLetter !== editedContent) {
+    setEditedContent(coverLetter)
+  }
+
+  const handleCopy = () => {
+    onCopy(editedContent)
+  }
+
+  const handleContentChange = (content: string) => {
+    setEditedContent(content)
+  }
+
   return (
     <div className="card bg-[rgba(255,255,255,0.85)] border border-[rgba(31,42,26,0.12)] rounded-xl shadow-[0_10px_28px_rgba(31,42,26,0.12)] overflow-hidden">
       <div className="p-4 flex flex-col gap-4">
@@ -36,10 +52,10 @@ export default function ResultCard({
         <div className="flex flex-col gap-[10px]">
           <div className="p-3 rounded-lg border border-[rgba(31,42,26,0.12)] bg-[rgba(255,255,255,0.04)]">
             <p className="text-[13px] text-[#777e72] m-0 mb-2">Cover letter</p>
-            <CoverLetterDisplay content={coverLetter} />
+            <CoverLetterDisplay content={editedContent} onChange={handleContentChange} />
             <div className="flex gap-[10px] mt-3">
               <button
-                onClick={onCopy}
+                onClick={handleCopy}
                 className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2"
                 style={{
                   background: 'linear-gradient(135deg, #5faf3b, rgba(32, 203, 17, 0.45))',

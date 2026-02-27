@@ -56,10 +56,11 @@ export default function Home() {
     }
   }
 
-  const handleCopy = async () => {
-    if (!result?.cover_letter) return
+  const handleCopy = async (content?: string) => {
+    const textToCopy = content || result?.cover_letter
+    if (!textToCopy) return
     try {
-      await navigator.clipboard.writeText(result.cover_letter)
+      await navigator.clipboard.writeText(textToCopy)
     } catch {
       setError('Could not copy automatically. Please copy manually.')
     }
