@@ -106,15 +106,30 @@ async function callWatsonx(
   }
 
   const data = await response.json()
+  console.log('Watsonx response:', JSON.stringify(data, null, 2))
+  
   const generatedText = data.results?.[0]?.generated_text || ''
 
-  // Extract JSON from the response
-  const jsonMatch = generatedText.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
-    throw new Error('Failed to parse AI response as JSON')
+  if (!generatedText) {
+    throw new Error('Watsonx returned empty response')
   }
 
-  return JSON.parse(jsonMatch[0])
+  // Try to extract JSON from the response
+  // First try direct JSON parse
+  try {
+    return JSON.parse(generatedText)
+  } catch {
+    // If direct parse fails, try to extract JSON from text
+    const jsonMatch = generatedText.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      try {
+        return JSON.parse(jsonMatch[0])
+      } catch {
+        throw new Error(`Failed to parse AI response as JSON. Response: ${generatedText.substring(0, 500)}`)
+      }
+    }
+    throw new Error(`Failed to parse AI response as JSON. Response: ${generatedText.substring(0, 500)}`)
+  }
 }
 
 // Call OpenAI API
@@ -149,13 +164,24 @@ async function callOpenAI(
   const data = await response.json()
   const content = data.choices?.[0]?.message?.content || ''
 
-  // Extract JSON from the response
-  const jsonMatch = content.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
-    throw new Error('Failed to parse AI response as JSON')
+  if (!content) {
+    throw new Error('OpenAI returned empty response')
   }
 
-  return JSON.parse(jsonMatch[0])
+  // Try to extract JSON from the response
+  try {
+    return JSON.parse(content)
+  } catch {
+    const jsonMatch = content.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      try {
+        return JSON.parse(jsonMatch[0])
+      } catch {
+        throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
+      }
+    }
+    throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
+  }
 }
 
 // Call DeepSeek API (OpenAI-compatible)
@@ -189,13 +215,24 @@ async function callDeepSeek(
   const data = await response.json()
   const content = data.choices?.[0]?.message?.content || ''
 
-  // Extract JSON from the response
-  const jsonMatch = content.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
-    throw new Error('Failed to parse AI response as JSON')
+  if (!content) {
+    throw new Error('DeepSeek returned empty response')
   }
 
-  return JSON.parse(jsonMatch[0])
+  // Try to extract JSON from the response
+  try {
+    return JSON.parse(content)
+  } catch {
+    const jsonMatch = content.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      try {
+        return JSON.parse(jsonMatch[0])
+      } catch {
+        throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
+      }
+    }
+    throw new Error(`Failed to parse AI response as JSON. Response: ${content.substring(0, 500)}`)
+  }
 }
 
 // Main generate function
