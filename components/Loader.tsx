@@ -1,12 +1,16 @@
 'use client'
 
 interface LoaderProps {
-  isLoading: boolean
+  visible: boolean
 }
 
-export default function Loader({ isLoading }: LoaderProps) {
+export default function Loader({ visible }: LoaderProps) {
   return (
-    <div className={`loader-wrapper ${isLoading ? 'block' : 'hidden'}`} style={{ marginTop: '10px' }}>
+    <div 
+      className="loader-wrapper" 
+      id="loaderWrapper"
+      style={{ display: visible ? 'block' : 'none' }}
+    >
       <div className="loader-line"></div>
     </div>
   )
