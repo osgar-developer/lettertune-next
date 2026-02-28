@@ -153,9 +153,12 @@ Mark Hamilton`)
                     // Extract text from PDF client-side
                     alert('Processing PDF...')
                     try {
-                      // Use legacy build which has worker embedded
-                      const pdfjs = await import('pdfjs-dist/legacy/build/pdf.min.mjs')
-                      alert('PDF.js loaded')
+                      // Dynamic import to avoid SSR issues
+                      const pdfjs = await import('pdfjs-dist')
+                      
+                      // Use a known working worker from unpkg
+                      pdfjs.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs'
+                      alert('PDF.js worker configured')
                     
                       const arrayBuffer = await file.arrayBuffer()
                       alert('ArrayBuffer size: ' + arrayBuffer.byteLength)
