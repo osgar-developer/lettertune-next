@@ -41,7 +41,10 @@ export async function POST(request: NextRequest) {
     // Generate PDF buffer
     const pdfBuffer = await renderToBuffer(CoverLetterDocument({ content }))
 
-    return new NextResponse(pdfBuffer, {
+    // Convert to Uint8Array for NextResponse compatibility
+    const uint8Array = new Uint8Array(pdfBuffer)
+
+    return new NextResponse(uint8Array, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename="cover-letter.pdf"',
