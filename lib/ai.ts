@@ -115,7 +115,7 @@ async function callWatsonx(
   }
 
   // Try to extract JSON from the response
-  // Handle cases where response includes markdown code blocks or text before JSON
+  // Handle cases where response includes text before the JSON
   function extractJSON(text: string): CoverLetterResponse {
     // Try direct parse first
     try {
@@ -131,13 +131,24 @@ async function callWatsonx(
         }
       }
       
-      // Try to find any JSON object in the text
-      const jsonMatch = text.match(/\{[\s\S]*\}/)
-      if (jsonMatch) {
+      // Find the first { that starts a valid JSON object
+      // Look for "{" and try to parse from there
+      const firstBrace = text.indexOf('{')
+      if (firstBrace !== -1) {
+        const jsonPart = text.substring(firstBrace)
         try {
-          return JSON.parse(jsonMatch[0])
+          return JSON.parse(jsonPart)
         } catch {
-          throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+          // Try to find the closing brace
+          const lastBrace = jsonPart.lastIndexOf('}')
+          if (lastBrace !== -1) {
+            const trimmedJson = jsonPart.substring(0, lastBrace + 1)
+            try {
+              return JSON.parse(trimmedJson)
+            } catch {
+              throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+            }
+          }
         }
       }
       throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
@@ -194,12 +205,19 @@ async function callOpenAI(
           return JSON.parse(codeBlockMatch[1])
         } catch { }
       }
-      const jsonMatch = text.match(/\{[\s\S]*\}/)
-      if (jsonMatch) {
+      // Find first { and try parsing from there
+      const firstBrace = text.indexOf('{')
+      if (firstBrace !== -1) {
+        const jsonPart = text.substring(firstBrace)
         try {
-          return JSON.parse(jsonMatch[0])
+          return JSON.parse(jsonPart)
         } catch {
-          throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+          const lastBrace = jsonPart.lastIndexOf('}')
+          if (lastBrace !== -1) {
+            try {
+              return JSON.parse(jsonPart.substring(0, lastBrace + 1))
+            } catch { }
+          }
         }
       }
       throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
@@ -255,12 +273,19 @@ async function callDeepSeek(
           return JSON.parse(codeBlockMatch[1])
         } catch { }
       }
-      const jsonMatch = text.match(/\{[\s\S]*\}/)
-      if (jsonMatch) {
+      // Find first { and try parsing from there
+      const firstBrace = text.indexOf('{')
+      if (firstBrace !== -1) {
+        const jsonPart = text.substring(firstBrace)
         try {
-          return JSON.parse(jsonMatch[0])
+          return JSON.parse(jsonPart)
         } catch {
-          throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
+          const lastBrace = jsonPart.lastIndexOf('}')
+          if (lastBrace !== -1) {
+            try {
+              return JSON.parse(jsonPart.substring(0, lastBrace + 1))
+            } catch { }
+          }
         }
       }
       throw new Error(`Failed to parse AI response as JSON. Response: ${text.substring(0, 500)}`)
