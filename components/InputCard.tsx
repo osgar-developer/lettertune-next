@@ -5,10 +5,6 @@ import ModelSelector from './ModelSelector'
 import TextInput from './TextInput'
 import ActionButtons from './ActionButtons'
 import Loader from './Loader'
-import * as pdfjs from 'pdfjs-dist'
-
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 interface InputCardProps {
   onGenerate: (data: {
@@ -156,6 +152,10 @@ Mark Hamilton`)
                   if (fileName.endsWith('.pdf')) {
                     // Extract text from PDF client-side
                     console.log('Processing PDF...')
+                    // Dynamic import to avoid SSR issues
+                    const pdfjs = await import('pdfjs-dist')
+                    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+                    
                     const arrayBuffer = await file.arrayBuffer()
                     const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
                     const pdf = await loadingTask.promise
