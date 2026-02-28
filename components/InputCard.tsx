@@ -5,6 +5,10 @@ import ModelSelector from './ModelSelector'
 import TextInput from './TextInput'
 import ActionButtons from './ActionButtons'
 import Loader from './Loader'
+import * as pdfjs from 'pdfjs-dist'
+
+// Configure PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 interface InputCardProps {
   onGenerate: (data: {
@@ -127,12 +131,85 @@ Mark Hamilton`)
           onChange={setCompanyJobInfo}
         />
 
-        <TextInput
-          label="Applicant background / resume"
-          placeholder="Paste your resume, skills, experience, achievements, tools..."
-          value={applicantBackground}
-          onChange={setApplicantBackground}
-        />
+        <div className="relative">
+          <TextInput
+            label="Applicant background / resume"
+            placeholder="Paste your resume, skills, experience, achievements, tools..."
+            value={applicantBackground}
+            onChange={setApplicantBackground}
+          />
+          <label className="absolute top-0 right-0 text-[12px] text-[#5faf3b] cursor-pointer hover:underline font-medium">
+            Upload CV
+            <input
+              type="file"
+              accept=".pdf,.docx,.doc,.txt,.md"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+
+                try {
+                  let extractedText = ''
+                  const fileName = file.name.toLowerCase()
+                  console.log('Uploading file:', fileName)
+
+                  if (fileName.endsWith('.pdf')) {
+                    // Extract text from PDF client-side
+                    console.log('Processing PDF...')
+                    const arrayBuffer = await file.arrayBuffer()
+                    const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
+                    const pdf = await loadingTask.promise
+                    let fullText = ''
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                      const page = await pdf.getPage(i)
+                      const textContent = await page.getTextContent()
+                      const pageText = textContent.items
+                        .map((item: any) => item.str)
+                        .join(' ')
+                      fullText += pageText + '\n\n'
+                    }
+                    extractedText = fullText.trim()
+                    console.log('PDF extracted, length:', extractedText.length)
+                  } else if (fileName.endsWith('.docx')) {
+                    // Use server-side for DOCX
+                    console.log('Processing DOCX via server...')
+                    const formData = new FormData()
+                    formData.append('file', file)
+                    const response = await fetch('/api/extract-cv', {
+                      method: 'POST',
+                      body: formData,
+                    })
+                    if (!response.ok) {
+                      const error = await response.json()
+                      alert(error.error || 'Failed to extract text')
+                      return
+                    }
+                    const data = await response.json()
+                    extractedText = data.text
+                  } else if (fileName.endsWith('.txt') || fileName.endsWith('.md')) {
+                    // Plain text
+                    extractedText = await file.text()
+                  } else {
+                    alert('Unsupported file format. Please use PDF, DOCX, TXT, or MD.')
+                    return
+                  }
+
+                  if (!extractedText || extractedText.trim().length === 0) {
+                    alert('Could not extract text from file')
+                    return
+                  }
+
+                  setApplicantBackground((prev) => {
+                    return prev ? `${prev}\n\n${extractedText}` : extractedText
+                  })
+                } catch (error) {
+                  console.error('Upload error:', error)
+                  alert('Failed to extract text. Try a different file format.')
+                }
+              }}
+            />
+          </label>
+        </div>
 
         <TextInput
           label="Previous cover letter (style reference)"
