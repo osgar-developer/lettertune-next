@@ -17,7 +17,7 @@ export default function TextInput({ label, placeholder, value, onChange, isTextA
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full border border-[rgba(31,42,26,0.12)] bg-[rgba(255,255,255,0.95)] text-[#1f2a1a] rounded-lg p-3 outline-none resize-vertical min-h-[120px] text-[13px]"
+          className="w-full border border-[rgba(31,42,26,0.12)] bg-[rgba(255,255,255,0.95)] text-[#1f2a1a] rounded-lg p-3 outline-none resize-vertical min-h-[240px] text-[13px]"
           style={{ lineHeight: 1.4 }}
         />
       ) : (
