@@ -82,3 +82,121 @@ body {
   border-radius: 999px;
   animation: loading-line 1.2s ease-in-out infinite;
 }
+
+/* ====== Modern Component Animations ====== */
+
+/* Fade in + slide up animation */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation delays */
+.animate-in {
+  animation: fadeSlideIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+.animate-delay-4 { animation-delay: 0.4s; }
+
+/* Card hover lift effect */
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(31, 42, 26, 0.15);
+}
+
+/* Subtle border glow on focus */
+@keyframes borderGlow {
+  0%, 100% {
+    border-color: rgba(31, 42, 26, 0.12);
+  }
+  50% {
+    border-color: rgba(49, 135, 49, 0.4);
+  }
+}
+
+.input-focus {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-focus:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(49, 135, 49, 0.12);
+}
+
+/* Button press effect */
+@keyframes btnPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+.btn-press:active {
+  animation: btnPress 0.15s ease;
+}
+
+/* Pulse animation for generate button when idle */
+@keyframes pulseSoft {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(49, 135, 49, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(49, 135, 49, 0);
+  }
+}
+
+.btn-pulse {
+  animation: pulseSoft 2s ease-in-out infinite;
+}
+
+/* Fade in for result card */
+@keyframes resultFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.result-appear {
+  animation: resultFadeIn 0.4s ease-out forwards;
+}
+
+/* Shimmer loading effect for skeleton states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(31, 42, 26, 0.06) 25%,
+    rgba(31, 42, 26, 0.12) 50%,
+    rgba(31, 42, 26, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}

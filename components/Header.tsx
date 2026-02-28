@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header>
       <div 
-        className="card" 
+        className="card card-hover animate-in" 
         style={{ 
           width: '100%', 
           padding: '12px',

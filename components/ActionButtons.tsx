@@ -13,7 +13,7 @@ export default function ActionButtons({ onGenerate, onFillExample, onClear, isLo
       <button
         onClick={onGenerate}
         disabled={isLoading}
-        className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer transition-transform text-[14px] flex items-center justify-center gap-2"
+        className={`border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer transition-transform text-[14px] flex items-center justify-center gap-2 ${!isLoading ? 'btn-pulse' : ''} btn-press`}
         style={{
           background: 'linear-gradient(135deg, #5faf3b, rgba(32, 203, 17, 0.45))',
           color: '#0f1d0b',
@@ -27,7 +27,7 @@ export default function ActionButtons({ onGenerate, onFillExample, onClear, isLo
         onClick={onFillExample}
         type="button"
         disabled={isLoading}
-        className="bg-white text-[#1f2a1a] border border-[rgba(31,42,26,0.12)] rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px]"
+        className="bg-white text-[#1f2a1a] border border-[rgba(31,42,26,0.12)] rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] card-hover btn-press"
       >
         Fill example
       </button>
@@ -35,7 +35,7 @@ export default function ActionButtons({ onGenerate, onFillExample, onClear, isLo
         onClick={onClear}
         type="button"
         disabled={isLoading}
-        className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px]"
+        className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] btn-press"
         style={{
           background: 'rgba(239,68,68,0.15)',
           color: 'rgba(30, 29, 29, 0.92)',
