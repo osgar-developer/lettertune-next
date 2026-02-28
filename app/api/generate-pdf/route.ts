@@ -6,10 +6,17 @@ export const runtime = 'nodejs'
 
 export async function POST(request: NextRequest) {
   try {
-    const { content } = await request.json()
+    const body = await request.json()
+    const { content } = body
 
-    if (!content) {
-      return NextResponse.json({ error: 'No content provided' }, { status: 400 })
+    console.log('PDF API received content length:', content?.length)
+
+    if (!content || typeof content !== 'string') {
+      return NextResponse.json({ error: 'No content provided', received: typeof content }, { status: 400 })
+    }
+
+    if (content.trim().length === 0) {
+      return NextResponse.json({ error: 'Content is empty' }, { status: 400 })
     }
 
     // Create PDF document
