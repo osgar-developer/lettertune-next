@@ -47,6 +47,36 @@ export default function ResultCard({
     onCopy(editedContent)
   }
 
+  // Handler for download PDF button
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await fetch('/api/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: editedContent }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'cover-letter.pdf'
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      a.remove()
+    } catch (error) {
+      console.error('PDF download error:', error)
+      alert('Failed to download PDF')
+    }
+  }
+
   return (
     <div className={`card bg-[rgba(255,255,255,0.85)] border border-[rgba(31,42,26,0.12)] rounded-b-xl rounded-t-none shadow-[0_10px_28px_rgba(31,42,26,0.12)] overflow-hidden ${coverLetter ? 'result-appear card-hover' : ''}`}>
       <div className="p-4 flex flex-col gap-4">
@@ -72,6 +102,13 @@ export default function ResultCard({
                 }}
               >
                 Copy letter
+              </button>
+              <button
+                onClick={handleDownloadPdf}
+                type="button"
+                className="bg-white text-[#1f2a1a] border border-[rgba(31,42,26,0.12)] rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] card-hover btn-press"
+              >
+                Download PDF
               </button>
             </div>
           </div>
