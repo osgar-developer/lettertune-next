@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CoverLetterDisplay from './CoverLetterDisplay'
 import KeyMatches from './KeyMatches'
 import StyleNotes from './StyleNotes'
@@ -27,19 +27,22 @@ export default function ResultCard({
   limit,
   onCopy,
 }: ResultCardProps) {
+  // Track edited content - initialized with generated cover letter
   const [editedContent, setEditedContent] = useState(coverLetter)
 
-  // Update edited content when a new cover letter is generated
-  if (coverLetter && coverLetter !== editedContent) {
+  // When a new cover letter is generated, reset edited content
+  useEffect(() => {
     setEditedContent(coverLetter)
+  }, [coverLetter])
+
+  // Handler when user edits the textarea
+  const handleContentChange = (newContent: string) => {
+    setEditedContent(newContent)
   }
 
-  const handleCopy = () => {
+  // Handler for copy button - use edited content
+  const handleCopyClick = () => {
     onCopy(editedContent)
-  }
-
-  const handleContentChange = (content: string) => {
-    setEditedContent(content)
   }
 
   return (
@@ -52,10 +55,13 @@ export default function ResultCard({
         <div className="flex flex-col gap-[10px]">
           <div className="p-3 rounded-lg border border-[rgba(31,42,26,0.12)] bg-[rgba(255,255,255,0.04)]">
             <p className="text-[13px] text-[#777e72] m-0 mb-2">Cover letter</p>
-            <CoverLetterDisplay content={editedContent} onChange={handleContentChange} />
+            <CoverLetterDisplay 
+              content={coverLetter} 
+              onChange={handleContentChange} 
+            />
             <div className="flex gap-[10px] mt-3">
               <button
-                onClick={handleCopy}
+                onClick={handleCopyClick}
                 className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2"
                 style={{
                   background: 'linear-gradient(135deg, #5faf3b, rgba(32, 203, 17, 0.45))',

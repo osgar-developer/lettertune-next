@@ -8,25 +8,26 @@ interface CoverLetterDisplayProps {
 }
 
 export default function CoverLetterDisplay({ content, onChange }: CoverLetterDisplayProps) {
-  // Local state for the edited content, initialized with prop
+  // Local state for the edited content
   const [localContent, setLocalContent] = useState(content)
 
-  // When content prop changes from parent (new generation), sync local state
+  // When content prop changes (new generation), update local state
   useEffect(() => {
     if (content && content !== localContent) {
       setLocalContent(content)
     }
-  }, [content])
+  }, [content, localContent])
 
+  // Handler for textarea changes
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
     setLocalContent(newValue)
+    // Notify parent of changes
     if (onChange) {
       onChange(newValue)
     }
   }
 
-  // Use local content if available, otherwise fall back to prop
   const displayValue = localContent || content || ''
 
   const baseStyle: React.CSSProperties = {
@@ -66,3 +67,6 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
     />
   )
 }
+
+// Export a way to get current content - though in React we use callbacks
+// The component uses controlled input via onChange
