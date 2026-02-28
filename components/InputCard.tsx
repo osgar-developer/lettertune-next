@@ -127,12 +127,51 @@ Mark Hamilton`)
           onChange={setCompanyJobInfo}
         />
 
-        <TextInput
-          label="Applicant background / resume"
-          placeholder="Paste your resume, skills, experience, achievements, tools..."
-          value={applicantBackground}
-          onChange={setApplicantBackground}
-        />
+        <div className="relative">
+          <TextInput
+            label="Applicant background / resume"
+            placeholder="Paste your resume, skills, experience, achievements, tools..."
+            value={applicantBackground}
+            onChange={setApplicantBackground}
+          />
+          <label className="absolute top-0 right-0 text-[12px] text-[#5faf3b] cursor-pointer hover:underline font-medium">
+            Upload CV
+            <input
+              type="file"
+              accept=".pdf,.docx,.txt,.md"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+
+                const formData = new FormData()
+                formData.append('file', file)
+
+                try {
+                  const response = await fetch('/api/extract-cv', {
+                    method: 'POST',
+                    body: formData,
+                  })
+
+                  if (!response.ok) {
+                    const error = await response.json()
+                    alert(error.error || 'Failed to extract text')
+                    return
+                  }
+
+                  const data = await response.json()
+                  setApplicantBackground((prev) => {
+                    const newText = data.text
+                    return prev ? `${prev}\n\n${newText}` : newText
+                  })
+                } catch (error) {
+                  console.error('Upload error:', error)
+                  alert('Failed to upload file')
+                }
+              }}
+            />
+          </label>
+        </div>
 
         <TextInput
           label="Previous cover letter (style reference)"
