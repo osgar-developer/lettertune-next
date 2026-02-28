@@ -152,24 +152,34 @@ Mark Hamilton`)
                   if (fileName.endsWith('.pdf')) {
                     // Extract text from PDF client-side
                     console.log('Processing PDF...')
-                    // Dynamic import to avoid SSR issues
-                    const pdfjs = await import('pdfjs-dist')
-                    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+                    try {
+                      // Dynamic import to avoid SSR issues
+                      const pdfjs = await import('pdfjs-dist')
+                      pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+                      console.log('PDF.js loaded:', pdfjs.version)
                     
-                    const arrayBuffer = await file.arrayBuffer()
-                    const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
-                    const pdf = await loadingTask.promise
-                    let fullText = ''
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                      const page = await pdf.getPage(i)
-                      const textContent = await page.getTextContent()
-                      const pageText = textContent.items
-                        .map((item: any) => item.str)
-                        .join(' ')
-                      fullText += pageText + '\n\n'
+                      const arrayBuffer = await file.arrayBuffer()
+                      console.log('ArrayBuffer size:', arrayBuffer.byteLength)
+                      const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
+                      const pdf = await loadingTask.promise
+                      console.log('PDF loaded, pages:', pdf.numPages)
+                      
+                      let fullText = ''
+                      for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i)
+                        const textContent = await page.getTextContent()
+                        const pageText = textContent.items
+                          .map((item: any) => item.str)
+                          .join(' ')
+                        fullText += pageText + '\n\n'
+                      }
+                      extractedText = fullText.trim()
+                      console.log('PDF extracted, length:', extractedText.length)
+                    } catch (pdfError) {
+                      console.error('PDF extraction error:', pdfError)
+                      alert('Failed to extract PDF. Try converting to DOCX.')
+                      return
                     }
-                    extractedText = fullText.trim()
-                    console.log('PDF extracted, length:', extractedText.length)
                   } else if (fileName.endsWith('.docx')) {
                     // Use server-side for DOCX
                     console.log('Processing DOCX via server...')
