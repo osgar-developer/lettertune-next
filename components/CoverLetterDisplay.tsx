@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface CoverLetterDisplayProps {
   content: string
@@ -8,15 +8,8 @@ interface CoverLetterDisplayProps {
 }
 
 export default function CoverLetterDisplay({ content, onChange }: CoverLetterDisplayProps) {
-  // Local state for the edited content
-  const [localContent, setLocalContent] = useState(content)
-
-  // When content prop changes (new generation), update local state
-  useEffect(() => {
-    if (content && content !== localContent) {
-      setLocalContent(content)
-    }
-  }, [content, localContent])
+  // Local state for the edited content - default to prop content
+  const [localContent, setLocalContent] = useState<string>(content || '')
 
   // Handler for textarea changes
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,6 +21,7 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
     }
   }
 
+  // What to display - prefer local edits, fall back to prop
   const displayValue = localContent || content || ''
 
   const baseStyle: React.CSSProperties = {
@@ -48,17 +42,6 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
     overflow: 'auto',
   }
 
-  if (!displayValue) {
-    return (
-      <textarea
-        style={{ ...baseStyle, color: '#777e72' }}
-        placeholder="Your generated cover letter will appear here…"
-        value=""
-        onChange={handleChange}
-      />
-    )
-  }
-
   return (
     <textarea
       style={baseStyle}
@@ -67,6 +50,3 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
     />
   )
 }
-
-// Export a way to get current content - though in React we use callbacks
-// The component uses controlled input via onChange

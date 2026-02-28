@@ -27,12 +27,14 @@ export default function ResultCard({
   limit,
   onCopy,
 }: ResultCardProps) {
-  // Track edited content - initialized with generated cover letter
-  const [editedContent, setEditedContent] = useState(coverLetter)
+  // Track edited content - starts with generated cover letter
+  const [editedContent, setEditedContent] = useState<string>('')
 
-  // When a new cover letter is generated, reset edited content
+  // When coverLetter prop changes (new generation), reset edited content
   useEffect(() => {
-    setEditedContent(coverLetter)
+    if (coverLetter) {
+      setEditedContent(coverLetter)
+    }
   }, [coverLetter])
 
   // Handler when user edits the textarea
@@ -56,7 +58,7 @@ export default function ResultCard({
           <div className="p-3 rounded-lg border border-[rgba(31,42,26,0.12)] bg-[rgba(255,255,255,0.04)]">
             <p className="text-[13px] text-[#777e72] m-0 mb-2">Cover letter</p>
             <CoverLetterDisplay 
-              content={coverLetter} 
+              content={editedContent} 
               onChange={handleContentChange} 
             />
             <div className="flex gap-[10px] mt-3">
