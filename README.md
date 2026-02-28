@@ -28,6 +28,14 @@ It supports 5 AI backends:
 
 ---
 
+## Live Demo
+
+A hosted version of LetterTune is available at: **https://next.lettertune.com**
+
+This public demo showcases the full end-to-end workflow, including model selection and style-based cover letter generation.
+
+---
+
 ## Tech Stack
 
 - **Framework:** Next.js 15 (App Router)
