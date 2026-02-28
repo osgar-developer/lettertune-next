@@ -204,12 +204,10 @@ Mark Hamilton`)
                       extractedText = fullText.trim()
                     } catch (pdfError) {
                       console.error('PDF extraction error:', pdfError)
-                      alert('PDF extraction failed: ' + (pdfError as Error).message)
                       return
                     }
                   } else if (fileName.endsWith('.docx')) {
                     // Use server-side for DOCX
-                    console.log('Processing DOCX via server...')
                     const formData = new FormData()
                     formData.append('file', file)
                     const response = await fetch('/api/extract-cv', {
@@ -217,8 +215,6 @@ Mark Hamilton`)
                       body: formData,
                     })
                     if (!response.ok) {
-                      const error = await response.json()
-                      alert(error.error || 'Failed to extract text')
                       return
                     }
                     const data = await response.json()
@@ -227,12 +223,10 @@ Mark Hamilton`)
                     // Plain text
                     extractedText = await file.text()
                   } else {
-                    alert('Unsupported file format. Please use PDF, DOCX, TXT, or MD.')
                     return
                   }
 
                   if (!extractedText || extractedText.trim().length === 0) {
-                    alert('Could not extract text from file')
                     return
                   }
 
@@ -241,7 +235,6 @@ Mark Hamilton`)
                   })
                 } catch (error) {
                   console.error('Upload error:', error)
-                  alert('Failed to extract text. Try a different file format.')
                 }
               }}
             />
