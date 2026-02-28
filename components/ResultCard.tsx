@@ -94,7 +94,7 @@ export default function ResultCard({
             <div className="flex gap-[10px] mt-3">
               <button
                 onClick={handleCopyClick}
-                className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2"
+                className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2 btn-press"
                 style={{
                   background: 'linear-gradient(135deg, #5faf3b, rgba(32, 203, 17, 0.45))',
                   color: '#0f1d0b',
