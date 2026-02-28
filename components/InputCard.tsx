@@ -156,8 +156,8 @@ Mark Hamilton`)
                       // Dynamic import to avoid SSR issues
                       const pdfjs = await import('pdfjs-dist')
                       
-                      // Use a known working worker from unpkg
-                      pdfjs.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs'
+                      // Use same version worker from unpkg
+                      pdfjs.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.4.624/build/pdf.worker.min.mjs'
                       alert('PDF.js worker configured')
                     
                       const arrayBuffer = await file.arrayBuffer()
