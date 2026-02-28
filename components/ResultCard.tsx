@@ -50,9 +50,6 @@ export default function ResultCard({
   // Handler for download PDF button
   const handleDownloadPdf = async () => {
     try {
-      console.log('Download PDF clicked, content length:', editedContent.length)
-      console.log('Content preview:', editedContent.substring(0, 100))
-
       const response = await fetch('/api/generate-pdf', {
         method: 'POST',
         headers: {
@@ -61,12 +58,8 @@ export default function ResultCard({
         body: JSON.stringify({ content: editedContent }),
       })
 
-      console.log('Response status:', response.status)
-      const responseData = await response.text()
-      console.log('Response body:', responseData)
-
       if (!response.ok) {
-        throw new Error(`Failed to generate PDF: ${response.status} - ${responseData}`)
+        throw new Error('Failed to generate PDF')
       }
 
       const blob = await response.blob()
@@ -80,7 +73,7 @@ export default function ResultCard({
       a.remove()
     } catch (error) {
       console.error('PDF download error:', error)
-      alert('Failed to download PDF: ' + (error as Error).message)
+      alert('Failed to download PDF')
     }
   }
 
