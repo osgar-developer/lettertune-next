@@ -200,3 +200,78 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* ====== Scroll Reveal Animations ====== */
+
+/* Base scroll reveal state - hidden */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* Visible state - slides up and fades in */
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Different reveal directions */
+.scroll-reveal-up {
+  transform: translateY(50px);
+}
+.scroll-reveal-up.visible {
+  transform: translateY(0);
+}
+
+.scroll-reveal-down {
+  transform: translateY(-50px);
+}
+.scroll-reveal-down.visible {
+  transform: translateY(0);
+}
+
+.scroll-reveal-left {
+  transform: translateX(-50px);
+}
+.scroll-reveal-left.visible {
+  transform: translateX(0);
+}
+
+.scroll-reveal-right {
+  transform: translateX(50px);
+}
+.scroll-reveal-right.visible {
+  transform: translateX(0);
+}
+
+/* Scale reveal - grows from center */
+.scroll-reveal-scale {
+  transform: scale(0.9);
+}
+.scroll-reveal-scale.visible {
+  transform: scale(1);
+}
+
+/* Staggered delays for scroll reveals */
+.scroll-delay-1 { transition-delay: 0.1s; }
+.scroll-delay-2 { transition-delay: 0.2s; }
+.scroll-delay-3 { transition-delay: 0.3s; }
+.scroll-delay-4 { transition-delay: 0.4s; }
+
+/* Subtle parallax-like float on visible */
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.scroll-float.visible {
+  animation: subtleFloat 4s ease-in-out infinite;
+  animation-delay: 0.7s;
+}

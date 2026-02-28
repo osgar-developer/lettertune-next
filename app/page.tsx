@@ -6,6 +6,7 @@ import InputCard from '@/components/InputCard'
 import ResultCard from '@/components/ResultCard'
 import DonationCard from '@/components/DonationCard'
 import Loader from '@/components/Loader'
+import ScrollReveal from '@/components/ScrollReveal'
 
 interface GenerateResponse {
   cover_letter: string
@@ -72,7 +73,9 @@ export default function Home() {
 
       <main className="min-h-screen p-6 flex justify-center items-start">
       <div className="w-full max-w-[980px] flex flex-col gap-[18px]">
-        <Header />
+        <ScrollReveal direction="up" delay={0}>
+          <Header />
+        </ScrollReveal>
 
         {error && (
           <div
@@ -89,20 +92,26 @@ export default function Home() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-[18px]">
-          <InputCard onGenerate={handleGenerate} isLoading={isLoading} />
-          <ResultCard
-            coverLetter={result?.cover_letter || ''}
-            keyMatches={result?.key_matches || []}
-            styleNotes={result?.style_notes || ''}
-            model={result?.model || ''}
-            duration={result?.duration || 0}
-            generationNumber={result?.used || 0}
-            limit={result?.limit || 0}
-            onCopy={handleCopy}
-          />
+          <ScrollReveal direction="left" delay={0.1}>
+            <InputCard onGenerate={handleGenerate} isLoading={isLoading} />
+          </ScrollReveal>
+          <ScrollReveal direction="right" delay={0.2}>
+            <ResultCard
+              coverLetter={result?.cover_letter || ''}
+              keyMatches={result?.key_matches || []}
+              styleNotes={result?.style_notes || ''}
+              model={result?.model || ''}
+              duration={result?.duration || 0}
+              generationNumber={result?.used || 0}
+              limit={result?.limit || 0}
+              onCopy={handleCopy}
+            />
+          </ScrollReveal>
         </div>
 
-        <DonationCard />
+        <ScrollReveal direction="up" delay={0.3}>
+          <DonationCard />
+        </ScrollReveal>
       </div>
     </main>
     </>
