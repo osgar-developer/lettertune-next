@@ -5,7 +5,6 @@ import ModelSelector from './ModelSelector'
 import TextInput from './TextInput'
 import ActionButtons from './ActionButtons'
 import Loader from './Loader'
-import mammoth from 'mammoth'
 import * as pdfjs from 'pdfjs-dist'
 
 // Configure PDF.js worker
@@ -152,11 +151,14 @@ Mark Hamilton`)
                 try {
                   let extractedText = ''
                   const fileName = file.name.toLowerCase()
+                  console.log('Uploading file:', fileName)
 
                   if (fileName.endsWith('.pdf')) {
                     // Extract text from PDF client-side
+                    console.log('Processing PDF...')
                     const arrayBuffer = await file.arrayBuffer()
-                    const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise
+                    const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
+                    const pdf = await loadingTask.promise
                     let fullText = ''
                     for (let i = 1; i <= pdf.numPages; i++) {
                       const page = await pdf.getPage(i)
@@ -167,16 +169,10 @@ Mark Hamilton`)
                       fullText += pageText + '\n\n'
                     }
                     extractedText = fullText.trim()
+                    console.log('PDF extracted, length:', extractedText.length)
                   } else if (fileName.endsWith('.docx')) {
-                    // Extract text from DOCX
-                    const arrayBuffer = await file.arrayBuffer()
-                    const result = await mammoth.extractRawText({ buffer: arrayBuffer })
-                    extractedText = result.value
-                  } else if (fileName.endsWith('.txt') || fileName.endsWith('.md')) {
-                    // Plain text
-                    extractedText = await file.text()
-                  } else {
-                    // Try server-side extraction as fallback
+                    // Use server-side for DOCX
+                    console.log('Processing DOCX via server...')
                     const formData = new FormData()
                     formData.append('file', file)
                     const response = await fetch('/api/extract-cv', {
@@ -190,6 +186,17 @@ Mark Hamilton`)
                     }
                     const data = await response.json()
                     extractedText = data.text
+                  } else if (fileName.endsWith('.txt') || fileName.endsWith('.md')) {
+                    // Plain text
+                    extractedText = await file.text()
+                  } else {
+                    alert('Unsupported file format. Please use PDF, DOCX, TXT, or MD.')
+                    return
+                  }
+
+                  if (!extractedText || extractedText.trim().length === 0) {
+                    alert('Could not extract text from file')
+                    return
                   }
 
                   setApplicantBackground((prev) => {
@@ -197,7 +204,7 @@ Mark Hamilton`)
                   })
                 } catch (error) {
                   console.error('Upload error:', error)
-                  alert('Failed to extract text from file')
+                  alert('Failed to extract text. Try a different file format.')
                 }
               }}
             />
