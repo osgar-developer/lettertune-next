@@ -94,7 +94,7 @@ export default function ResultCard({
             <div className="flex gap-[10px] mt-3">
               <button
                 onClick={handleCopyClick}
-                className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2 btn-press"
+                className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2 transition-transform btn-press"
                 style={{
                   background: 'linear-gradient(135deg, #5faf3b, rgba(32, 203, 17, 0.45))',
                   color: '#0f1d0b',
@@ -106,7 +106,12 @@ export default function ResultCard({
               <button
                 onClick={handleDownloadPdf}
                 type="button"
-                className="bg-white text-[#1f2a1a] border border-[rgba(31,42,26,0.12)] rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] card-hover btn-press"
+                className="border-0 rounded-lg px-4 py-[11px] font-bold cursor-pointer text-[14px] flex items-center justify-center gap-2 transition-transform btn-press"
+                style={{
+                  background: 'linear-gradient(135deg, #5faf3b, rgba(32, 203, 17, 0.45))',
+                  color: '#0f1d0b',
+                  boxShadow: '0 10px 24px rgba(95,175,59,0.25)',
+                }}
               >
                 Download PDF
               </button>
