@@ -151,18 +151,18 @@ Mark Hamilton`)
 
                   if (fileName.endsWith('.pdf')) {
                     // Extract text from PDF client-side
-                    console.log('Processing PDF...')
+                    alert('Processing PDF...')
                     try {
                       // Dynamic import to avoid SSR issues
                       const pdfjs = await import('pdfjs-dist')
                       pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
-                      console.log('PDF.js loaded:', pdfjs.version)
+                      alert('PDF.js loaded: ' + pdfjs.version)
                     
                       const arrayBuffer = await file.arrayBuffer()
-                      console.log('ArrayBuffer size:', arrayBuffer.byteLength)
+                      alert('ArrayBuffer size: ' + arrayBuffer.byteLength)
                       const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
                       const pdf = await loadingTask.promise
-                      console.log('PDF loaded, pages:', pdf.numPages)
+                      alert('PDF loaded, pages: ' + pdf.numPages)
                       
                       let fullText = ''
                       for (let i = 1; i <= pdf.numPages; i++) {
@@ -174,10 +174,10 @@ Mark Hamilton`)
                         fullText += pageText + '\n\n'
                       }
                       extractedText = fullText.trim()
-                      console.log('PDF extracted, length:', extractedText.length)
+                      alert('PDF extracted, length: ' + extractedText.length)
                     } catch (pdfError) {
                       console.error('PDF extraction error:', pdfError)
-                      alert('Failed to extract PDF. Try converting to DOCX.')
+                      alert('PDF extraction failed: ' + (pdfError as Error).message)
                       return
                     }
                   } else if (fileName.endsWith('.docx')) {
