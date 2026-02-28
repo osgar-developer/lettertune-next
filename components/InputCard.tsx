@@ -153,18 +153,15 @@ Mark Hamilton`)
                     // Extract text from PDF client-side
                     alert('Processing PDF...')
                     try {
-                      // Dynamic import to avoid SSR issues
-                      const pdfjs = await import('pdfjs-dist')
-                      pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
-                      alert('PDF.js loaded: ' + pdfjs.version)
+                      // Use legacy build which has worker embedded
+                      const pdfjs = await import('pdfjs-dist/legacy/build/pdf.min.mjs')
+                      alert('PDF.js loaded')
                     
                       const arrayBuffer = await file.arrayBuffer()
                       alert('ArrayBuffer size: ' + arrayBuffer.byteLength)
                       
-                      alert('Loading PDF document...')
                       const uint8Array = new Uint8Array(arrayBuffer)
                       
-                      // getDocument returns a promise directly in newer versions
                       const pdf = await pdfjs.getDocument({ data: uint8Array }).promise
                       alert('PDF loaded, pages: ' + pdf.numPages)
                       
