@@ -22,18 +22,22 @@ export async function POST(request: NextRequest) {
       // Extract text from DOCX
       const result = await mammoth.extractRawText({ buffer: fileBuffer })
       extractedText = result.value
+    } else if (fileName.endsWith('.doc')) {
+      // Also handle .doc (older Word format)
+      try {
+        const result = await mammoth.extractRawText({ buffer: fileBuffer })
+        extractedText = result.value
+      } catch {
+        return NextResponse.json({
+          error: 'Old .doc format not supported. Please save as DOCX.',
+        }, { status: 400 })
+      }
     } else if (fileName.endsWith('.txt') || fileName.endsWith('.md')) {
       // Plain text
       extractedText = fileBuffer.toString('utf-8')
-    } else if (fileName.endsWith('.pdf')) {
-      // For PDFs, return a message asking user to convert to DOCX
-      return NextResponse.json({
-        error: 'PDF parsing not available. Please convert your PDF to DOCX format and try again.',
-        hint: 'You can use free online tools to convert PDF to DOCX.'
-      }, { status: 400 })
     } else {
       return NextResponse.json(
-        { error: 'Unsupported file format. Please upload DOCX, TXT, or MD files.' },
+        { error: 'Unsupported file format. Please upload PDF, DOCX, TXT, or MD.' },
         { status: 400 }
       )
     }

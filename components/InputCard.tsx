@@ -5,6 +5,11 @@ import ModelSelector from './ModelSelector'
 import TextInput from './TextInput'
 import ActionButtons from './ActionButtons'
 import Loader from './Loader'
+import mammoth from 'mammoth'
+import * as pdfjs from 'pdfjs-dist'
+
+// Configure PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 interface InputCardProps {
   onGenerate: (data: {
@@ -138,35 +143,61 @@ Mark Hamilton`)
             Upload CV
             <input
               type="file"
-              accept=".pdf,.docx,.txt,.md"
+              accept=".pdf,.docx,.doc,.txt,.md"
               className="hidden"
               onChange={async (e) => {
                 const file = e.target.files?.[0]
                 if (!file) return
 
-                const formData = new FormData()
-                formData.append('file', file)
-
                 try {
-                  const response = await fetch('/api/extract-cv', {
-                    method: 'POST',
-                    body: formData,
-                  })
+                  let extractedText = ''
+                  const fileName = file.name.toLowerCase()
 
-                  if (!response.ok) {
-                    const error = await response.json()
-                    alert(error.error || 'Failed to extract text')
-                    return
+                  if (fileName.endsWith('.pdf')) {
+                    // Extract text from PDF client-side
+                    const arrayBuffer = await file.arrayBuffer()
+                    const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise
+                    let fullText = ''
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                      const page = await pdf.getPage(i)
+                      const textContent = await page.getTextContent()
+                      const pageText = textContent.items
+                        .map((item: any) => item.str)
+                        .join(' ')
+                      fullText += pageText + '\n\n'
+                    }
+                    extractedText = fullText.trim()
+                  } else if (fileName.endsWith('.docx')) {
+                    // Extract text from DOCX
+                    const arrayBuffer = await file.arrayBuffer()
+                    const result = await mammoth.extractRawText({ buffer: arrayBuffer })
+                    extractedText = result.value
+                  } else if (fileName.endsWith('.txt') || fileName.endsWith('.md')) {
+                    // Plain text
+                    extractedText = await file.text()
+                  } else {
+                    // Try server-side extraction as fallback
+                    const formData = new FormData()
+                    formData.append('file', file)
+                    const response = await fetch('/api/extract-cv', {
+                      method: 'POST',
+                      body: formData,
+                    })
+                    if (!response.ok) {
+                      const error = await response.json()
+                      alert(error.error || 'Failed to extract text')
+                      return
+                    }
+                    const data = await response.json()
+                    extractedText = data.text
                   }
 
-                  const data = await response.json()
                   setApplicantBackground((prev) => {
-                    const newText = data.text
-                    return prev ? `${prev}\n\n${newText}` : newText
+                    return prev ? `${prev}\n\n${extractedText}` : extractedText
                   })
                 } catch (error) {
                   console.error('Upload error:', error)
-                  alert('Failed to upload file')
+                  alert('Failed to extract text from file')
                 }
               }}
             />
