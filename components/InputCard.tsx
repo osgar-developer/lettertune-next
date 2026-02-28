@@ -151,34 +151,57 @@ Mark Hamilton`)
 
                   if (fileName.endsWith('.pdf')) {
                     // Extract text from PDF client-side
-                    alert('Processing PDF...')
                     try {
                       // Dynamic import to avoid SSR issues
                       const pdfjs = await import('pdfjs-dist')
                       
                       // Use same version worker from unpkg
                       pdfjs.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.4.624/build/pdf.worker.min.mjs'
-                      alert('PDF.js worker configured')
                     
                       const arrayBuffer = await file.arrayBuffer()
-                      alert('ArrayBuffer size: ' + arrayBuffer.byteLength)
-                      
                       const uint8Array = new Uint8Array(arrayBuffer)
                       
                       const pdf = await pdfjs.getDocument({ data: uint8Array }).promise
-                      alert('PDF loaded, pages: ' + pdf.numPages)
                       
                       let fullText = ''
                       for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i)
                         const textContent = await page.getTextContent()
-                        const pageText = textContent.items
-                          .map((item: any) => item.str)
-                          .join(' ')
-                        fullText += pageText + '\n\n'
+                        
+                        // Get items with position info for better formatting
+                        const items = textContent.items as any[]
+                        
+                        let lastY: number | null = null
+                        let lastX: number | null = null
+                        
+                        for (const item of items) {
+                          const text = item.str
+                          if (!text.trim()) continue
+                          
+                          const y = item.transform[5] // Y position
+                          const x = item.transform[4] // X position
+                          
+                          // Detect new line based on Y position change
+                          if (lastY !== null && Math.abs(y - lastY) > 5) {
+                            // Different line
+                            if (lastX !== null && x > lastX + 50) {
+                              // Indented text (likely new section) - add extra newline
+                              fullText += '\n\n'
+                            } else {
+                              fullText += '\n'
+                            }
+                          } else if (lastX !== null && x > lastX + 100) {
+                            // Large gap on same line - add extra space
+                            fullText += '  '
+                          }
+                          
+                          fullText += text
+                          lastY = y
+                          lastX = x + item.width
+                        }
+                        fullText += '\n\n'
                       }
                       extractedText = fullText.trim()
-                      alert('PDF extracted, length: ' + extractedText.length)
                     } catch (pdfError) {
                       console.error('PDF extraction error:', pdfError)
                       alert('PDF extraction failed: ' + (pdfError as Error).message)
