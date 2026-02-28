@@ -8,33 +8,41 @@ interface CoverLetterDisplayProps {
 }
 
 export default function CoverLetterDisplay({ content, onChange }: CoverLetterDisplayProps) {
-  const [editableContent, setEditableContent] = useState(content)
+  const [editedContent, setEditedContent] = useState(content)
 
   // Sync with prop when content changes (new generation)
-  if (content && content !== editableContent) {
-    setEditableContent(content)
+  if (content && content !== editedContent) {
+    setEditedContent(content)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
-    setEditableContent(newValue)
+    setEditedContent(newValue)
     if (onChange) {
       onChange(newValue)
     }
   }
 
-  if (!editableContent) {
+  const textareaStyle: React.CSSProperties = {
+    lineHeight: 1.6,
+    width: '100%',
+    minHeight: '585px',
+    resize: 'vertical',
+    fontFamily: 'inherit',
+    fontSize: '13px',
+    padding: '16px',
+    borderRadius: '8px',
+    border: '1px solid rgba(31,42,26,0.12)',
+    backgroundColor: 'white',
+    color: '#1f2a1a',
+    cursor: 'text',
+    outline: 'none',
+  }
+
+  if (!editedContent) {
     return (
       <textarea
-        className="bg-white border border-[rgba(31,42,26,0.12)] rounded-lg p-4 whitespace-pre-wrap text-[13px]"
-        style={{ 
-          lineHeight: 1.6, 
-          color: '#777e72',
-          width: '100%',
-          minHeight: '585px',
-          resize: 'vertical',
-          fontFamily: 'inherit'
-        }}
+        style={{ ...textareaStyle, color: '#777e72' }}
         placeholder="Your generated cover letter will appear here…"
         value=""
         readOnly
@@ -44,15 +52,8 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
 
   return (
     <textarea
-      className="bg-white border border-[rgba(31,42,26,0.12)] rounded-lg p-4 whitespace-pre-wrap text-[13px]"
-      style={{ 
-        lineHeight: 1.6, 
-        width: '100%',
-        minHeight: '585px',
-        resize: 'vertical',
-        fontFamily: 'inherit'
-      }}
-      value={editableContent}
+      style={textareaStyle}
+      value={editedContent}
       onChange={handleChange}
     />
   )
