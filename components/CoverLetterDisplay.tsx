@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 interface CoverLetterDisplayProps {
   content: string
@@ -9,11 +9,10 @@ interface CoverLetterDisplayProps {
 
 export default function CoverLetterDisplay({ content, onChange }: CoverLetterDisplayProps) {
   const [editedContent, setEditedContent] = useState(content)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Sync with prop when content changes (new generation)
   useEffect(() => {
-    if (content && content !== editedContent) {
+    if (content !== editedContent) {
       setEditedContent(content)
     }
   }, [content])
@@ -44,21 +43,19 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
     overflow: 'auto',
   }
 
-  if (!editedContent) {
+  if (!content && !editedContent) {
     return (
       <textarea
-        ref={textareaRef}
         style={{ ...baseStyle, color: '#777e72' }}
         placeholder="Your generated cover letter will appear here…"
         value=""
-        onChange={() => {}}
+        onChange={handleChange}
       />
     )
   }
 
   return (
     <textarea
-      ref={textareaRef}
       style={baseStyle}
       value={editedContent}
       onChange={handleChange}
