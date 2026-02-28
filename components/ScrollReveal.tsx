@@ -57,7 +57,7 @@ export default function ScrollReveal({
   return (
     <div
       ref={ref}
-      className={`scroll-reveal ${directionClass} ${floatClass} ${className}`}
+      className={`scroll-reveal scroll-progress-bar ${directionClass} ${floatClass} ${className}`}
     >
       {children}
     </div>

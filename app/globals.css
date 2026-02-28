@@ -275,3 +275,58 @@ body {
   animation: subtleFloat 4s ease-in-out infinite;
   animation-delay: 0.7s;
 }
+
+/* ====== Bottom Gradient Bar (Scroll Progress) ====== */
+
+.scroll-progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-progress-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(49, 135, 49, 0.6) 20%,
+    rgba(169, 188, 74, 0.8) 50%,
+    rgba(49, 135, 49, 0.6) 80%,
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 0 12px 12px;
+}
+
+.scroll-progress-bar.visible::after {
+  transform: scaleX(1);
+}
+
+/* Animated gradient shimmer on the bar */
+@keyframes gradientShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.scroll-progress-bar.visible::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(49, 135, 49, 0.8) 25%,
+    rgba(169, 188, 74, 1) 50%,
+    rgba(49, 135, 49, 0.8) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: gradientShimmer 2s linear infinite;
+}
