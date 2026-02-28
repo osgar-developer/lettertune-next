@@ -48,7 +48,7 @@ export default function ResultCard({
   }
 
   return (
-    <div className={`card bg-[rgba(255,255,255,0.85)] border border-[rgba(31,42,26,0.12)] rounded-xl shadow-[0_10px_28px_rgba(31,42,26,0.12)] overflow-hidden ${coverLetter ? 'result-appear card-hover' : ''}`}>
+    <div className={`card bg-[rgba(255,255,255,0.85)] border border-[rgba(31,42,26,0.12)] rounded-b-xl rounded-t-none shadow-[0_10px_28px_rgba(31,42,26,0.12)] overflow-hidden ${coverLetter ? 'result-appear card-hover' : ''}`}>
       <div className="p-4 flex flex-col gap-4">
         <p className="text-[13px] text-[#777e72] m-0 flex items-center justify-between gap-2">
           <strong className="text-[#1f2a1a] text-[14px] font-bold">Result</strong>

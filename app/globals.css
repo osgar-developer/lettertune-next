@@ -211,6 +211,7 @@ body {
               transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity, transform;
   overflow: hidden;
+  border-radius: 14px;
 }
 
 /* Visible state - slides up and fades in */
