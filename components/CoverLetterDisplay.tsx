@@ -8,22 +8,26 @@ interface CoverLetterDisplayProps {
 }
 
 export default function CoverLetterDisplay({ content, onChange }: CoverLetterDisplayProps) {
-  const [editedContent, setEditedContent] = useState(content)
+  // Local state for the edited content, initialized with prop
+  const [localContent, setLocalContent] = useState(content)
 
-  // Sync with prop when content changes (new generation)
+  // When content prop changes from parent (new generation), sync local state
   useEffect(() => {
-    if (content !== editedContent) {
-      setEditedContent(content)
+    if (content && content !== localContent) {
+      setLocalContent(content)
     }
   }, [content])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
-    setEditedContent(newValue)
+    setLocalContent(newValue)
     if (onChange) {
       onChange(newValue)
     }
   }
+
+  // Use local content if available, otherwise fall back to prop
+  const displayValue = localContent || content || ''
 
   const baseStyle: React.CSSProperties = {
     width: '100%',
@@ -43,7 +47,7 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
     overflow: 'auto',
   }
 
-  if (!content && !editedContent) {
+  if (!displayValue) {
     return (
       <textarea
         style={{ ...baseStyle, color: '#777e72' }}
@@ -57,7 +61,7 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
   return (
     <textarea
       style={baseStyle}
-      value={editedContent}
+      value={displayValue}
       onChange={handleChange}
     />
   )
