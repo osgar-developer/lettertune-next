@@ -160,7 +160,14 @@ Mark Hamilton`)
                     
                       const arrayBuffer = await file.arrayBuffer()
                       alert('ArrayBuffer size: ' + arrayBuffer.byteLength)
-                      const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
+                      
+                      alert('Loading PDF document...')
+                      const uint8Array = new Uint8Array(arrayBuffer)
+                      alert('Created Uint8Array, length: ' + uint8Array.length)
+                      
+                      const loadingTask = pdfjs.getDocument({ data: uint8Array })
+                      alert('Created loading task')
+                      
                       const pdf = await loadingTask.promise
                       alert('PDF loaded, pages: ' + pdf.numPages)
                       
