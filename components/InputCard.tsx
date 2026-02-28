@@ -151,28 +151,63 @@ Mark Hamilton`)
 
                   if (fileName.endsWith('.pdf')) {
                     // Extract text from PDF client-side
-                    console.log('Processing PDF...')
-                    // Dynamic import to avoid SSR issues
-                    const pdfjs = await import('pdfjs-dist')
-                    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+                    try {
+                      // Dynamic import to avoid SSR issues
+                      const pdfjs = await import('pdfjs-dist')
+                      
+                      // Use same version worker from unpkg
+                      pdfjs.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@5.4.624/build/pdf.worker.min.mjs'
                     
-                    const arrayBuffer = await file.arrayBuffer()
-                    const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
-                    const pdf = await loadingTask.promise
-                    let fullText = ''
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                      const page = await pdf.getPage(i)
-                      const textContent = await page.getTextContent()
-                      const pageText = textContent.items
-                        .map((item: any) => item.str)
-                        .join(' ')
-                      fullText += pageText + '\n\n'
+                      const arrayBuffer = await file.arrayBuffer()
+                      const uint8Array = new Uint8Array(arrayBuffer)
+                      
+                      const pdf = await pdfjs.getDocument({ data: uint8Array }).promise
+                      
+                      let fullText = ''
+                      for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i)
+                        const textContent = await page.getTextContent()
+                        
+                        // Get items with position info for better formatting
+                        const items = textContent.items as any[]
+                        
+                        let lastY: number | null = null
+                        let lastX: number | null = null
+                        
+                        for (const item of items) {
+                          const text = item.str
+                          if (!text.trim()) continue
+                          
+                          const y = item.transform[5] // Y position
+                          const x = item.transform[4] // X position
+                          
+                          // Detect new line based on Y position change
+                          if (lastY !== null && Math.abs(y - lastY) > 5) {
+                            // Different line
+                            if (lastX !== null && x > lastX + 50) {
+                              // Indented text (likely new section) - add extra newline
+                              fullText += '\n\n'
+                            } else {
+                              fullText += '\n'
+                            }
+                          } else if (lastX !== null && x > lastX + 100) {
+                            // Large gap on same line - add extra space
+                            fullText += '  '
+                          }
+                          
+                          fullText += text
+                          lastY = y
+                          lastX = x + item.width
+                        }
+                        fullText += '\n\n'
+                      }
+                      extractedText = fullText.trim()
+                    } catch (pdfError) {
+                      console.error('PDF extraction error:', pdfError)
+                      return
                     }
-                    extractedText = fullText.trim()
-                    console.log('PDF extracted, length:', extractedText.length)
                   } else if (fileName.endsWith('.docx')) {
                     // Use server-side for DOCX
-                    console.log('Processing DOCX via server...')
                     const formData = new FormData()
                     formData.append('file', file)
                     const response = await fetch('/api/extract-cv', {
@@ -180,8 +215,6 @@ Mark Hamilton`)
                       body: formData,
                     })
                     if (!response.ok) {
-                      const error = await response.json()
-                      alert(error.error || 'Failed to extract text')
                       return
                     }
                     const data = await response.json()
@@ -190,12 +223,10 @@ Mark Hamilton`)
                     // Plain text
                     extractedText = await file.text()
                   } else {
-                    alert('Unsupported file format. Please use PDF, DOCX, TXT, or MD.')
                     return
                   }
 
                   if (!extractedText || extractedText.trim().length === 0) {
-                    alert('Could not extract text from file')
                     return
                   }
 
@@ -204,7 +235,6 @@ Mark Hamilton`)
                   })
                 } catch (error) {
                   console.error('Upload error:', error)
-                  alert('Failed to extract text. Try a different file format.')
                 }
               }}
             />
