@@ -22,6 +22,8 @@ It supports 5 AI backends:
 - Modern responsive UI (mobile-friendly)
 - Style imitation based on a previous cover letter
 - Five selectable AI providers
+- **Upload CV/resume** - Supports PDF, DOCX, TXT, and MD files
+- **Download as PDF** - Export generated cover letter as formatted PDF
 - Structured JSON output
 - Server-side API routes
 - Type-safe throughout
