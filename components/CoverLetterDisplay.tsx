@@ -31,7 +31,7 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
           lineHeight: 1.6, 
           color: '#777e72',
           width: '100%',
-          minHeight: '150px',
+          minHeight: '450px',
           resize: 'vertical',
           fontFamily: 'inherit'
         }}
@@ -48,7 +48,7 @@ export default function CoverLetterDisplay({ content, onChange }: CoverLetterDis
       style={{ 
         lineHeight: 1.6, 
         width: '100%',
-        minHeight: '150px',
+        minHeight: '450px',
         resize: 'vertical',
         fontFamily: 'inherit'
       }}
