@@ -7,8 +7,6 @@ interface ModelSelectorProps {
 
 const models = [
   { value: 'llama', label: 'LLaMA (Meta)' },
-  { value: 'granite', label: 'Granite (IBM)' },
-  { value: 'mistral', label: 'Mistral' },
   { value: 'openai', label: 'OpenAI (GPT-4)' },
   { value: 'deepseek', label: 'DeepSeek' },
 ]
