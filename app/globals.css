@@ -26,14 +26,49 @@
   --danger: #e5533d;
 }
 
+/* Dark mode */
+[data-theme="dark"] {
+  --bg: #0f1419;
+  --card: rgba(30, 41, 50, 0.85);
+  --card-strong: rgba(30, 41, 50, 0.95);
+
+  --text: #e7e9ea;
+  --muted: #8b98a5;
+
+  --border: rgba(231, 233, 234, 0.12);
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+
+  --accent: #4ade80;
+  --accent-soft: #22c55e;
+  --accent-dark: #16a34a;
+
+  --success: #4ade80;
+  --danger: #f87171;
+}
+
 body {
   color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light mode backgrounds */
+body:not([data-theme="dark"]) {
   background:
     radial-gradient(900px 600px at 15% 0%, rgba(96, 136, 44, 0.45), transparent 55%),
     radial-gradient(800px 500px at 85% 25%, rgba(36, 165, 26, 0.38), transparent 50%),
     linear-gradient(180deg, #ffffff, #e9f6ef);
-  min-height: 100vh;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+/* Dark mode backgrounds */
+[data-theme="dark"] body,
+body[data-theme="dark"] {
+  background:
+    radial-gradient(900px 600px at 15% 0%, rgba(34, 197, 94, 0.15), transparent 55%),
+    radial-gradient(800px 500px at 85% 25%, rgba(22, 163, 74, 0.12), transparent 50%),
+    linear-gradient(180deg, #0f1419, #1a1f26);
 }
 
 /* Spinner animation */
