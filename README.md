@@ -24,7 +24,8 @@ It supports 5 AI backends:
 - Five selectable AI providers
 - **Upload CV/resume** - Supports PDF, DOCX, TXT, and MD files
 - **Download as PDF** - Export generated cover letter as formatted PDF
-- **Dark/Light Mode** - Toggle between dark and light themes
+- **Dark/Light Mode** - Toggle between dark and light themes (persisted)
+- **Auto-save inputs** - Applicant background and previous cover letter are saved locally for returning visitors
 - Structured JSON output
 - Server-side API routes
 - Type-safe throughout
