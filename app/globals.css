@@ -71,6 +71,11 @@ body[data-theme="dark"] {
     linear-gradient(180deg, #000000, #0a0a0a);
 }
 
+/* Ensure html is black in dark mode */
+[data-theme="dark"] html {
+  background-color: #000000 !important;
+}
+
 /* Dark mode headings */
 [data-theme="dark"] h1,
 [data-theme="dark"] h2,
