@@ -81,6 +81,46 @@ body[data-theme="dark"] {
   color: #ffffff;
 }
 
+/* Dark mode component overrides */
+[data-theme="dark"] .card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+[data-theme="dark"] .text-\[\#777e72\],
+[data-theme="dark"] .text-\[\\#777e72\] {
+  color: var(--muted) !important;
+}
+
+[data-theme="dark"] .text-\[\#1f2a1a\],
+[data-theme="dark"] .text-\[\\#1f2a1a\] {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .text-\[\#5faf3b\],
+[data-theme="dark"] .text-\[\\#5faf3b\] {
+  color: var(--success) !important;
+}
+
+[data-theme="dark"] .bg-\[rgba\(255\,255\,255\,0\.85\)\],
+[data-theme="dark"] .bg-\[rgba\(255\,255\,255\,0\.95\)\] {
+  background: var(--card) !important;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--muted) !important;
+}
+
 /* Spinner animation */
 @keyframes spin {
   to {
