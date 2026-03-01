@@ -21,8 +21,8 @@ export default function RootLayout({
             __html: `
               (function() {
                 const saved = localStorage.getItem('theme');
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (saved === 'dark' || (!saved && prefersDark)) {
+                // Default to light mode - only use dark if explicitly saved
+                if (saved === 'dark') {
                   document.documentElement.setAttribute('data-theme', 'dark');
                 }
               })();

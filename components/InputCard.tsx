@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ModelSelector from './ModelSelector'
 import TextInput from './TextInput'
 import ActionButtons from './ActionButtons'
@@ -23,6 +23,23 @@ export default function InputCard({ onGenerate, isLoading }: InputCardProps) {
   const [applicantBackground, setApplicantBackground] = useState('')
   const [previousCoverLetter, setPreviousCoverLetter] = useState('')
   const [additionalInstructions, setAdditionalInstructions] = useState('')
+
+  // Load persisted fields from localStorage on mount
+  useEffect(() => {
+    const savedBackground = localStorage.getItem('lettertune_applicant_background')
+    const savedCoverLetter = localStorage.getItem('lettertune_previous_cover_letter')
+    if (savedBackground) setApplicantBackground(savedBackground)
+    if (savedCoverLetter) setPreviousCoverLetter(savedCoverLetter)
+  }, [])
+
+  // Save to localStorage when these fields change
+  useEffect(() => {
+    localStorage.setItem('lettertune_applicant_background', applicantBackground)
+  }, [applicantBackground])
+
+  useEffect(() => {
+    localStorage.setItem('lettertune_previous_cover_letter', previousCoverLetter)
+  }, [previousCoverLetter])
 
   const handleGenerate = () => {
     onGenerate({
