@@ -123,6 +123,18 @@ body[data-theme="dark"] {
   color: var(--muted) !important;
 }
 
+/* Dark mode fixes for KeyMatches and StyleNotes */
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] [class*="bg-white"] {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .text-\[rgba\(0\,0\,0\,0\.82\)\],
+[data-theme="dark"] [class*="text-[rgba(0,0,0"] {
+  color: var(--text) !important;
+}
+
 /* Spinner animation */
 @keyframes spin {
   to {
