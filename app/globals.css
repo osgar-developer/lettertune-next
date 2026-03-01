@@ -26,14 +26,101 @@
   --danger: #e5533d;
 }
 
+/* Dark mode - dramatic dark theme */
+[data-theme="dark"] {
+  --bg: #000000;
+  --card: rgba(30, 30, 30, 0.9);
+  --card-strong: rgba(40, 40, 40, 0.95);
+
+  --text: #ffffff;
+  --muted: #a0a0a0;
+
+  --border: rgba(255, 255, 255, 0.15);
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+
+  --accent: #4ade80;
+  --accent-soft: #22c55e;
+  --accent-dark: #16a34a;
+
+  --success: #4ade80;
+  --danger: #f87171;
+}
+
 body {
   color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light mode backgrounds */
+body:not([data-theme="dark"]) {
   background:
     radial-gradient(900px 600px at 15% 0%, rgba(96, 136, 44, 0.45), transparent 55%),
     radial-gradient(800px 500px at 85% 25%, rgba(36, 165, 26, 0.38), transparent 50%),
     linear-gradient(180deg, #ffffff, #e9f6ef);
-  min-height: 100vh;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+/* Dark mode backgrounds - pure black */
+[data-theme="dark"] body,
+body[data-theme="dark"] {
+  background: #000000 !important;
+}
+
+/* Dark mode headings */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #ffffff;
+}
+
+/* Dark mode component overrides */
+[data-theme="dark"] .card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+[data-theme="dark"] .header-bg {
+  background: #000000 !important;
+}
+
+[data-theme="dark"] .text-\[\#777e72\],
+[data-theme="dark"] .text-\[\\#777e72\] {
+  color: var(--muted) !important;
+}
+
+/* Force white text on titles (Inputs, Result, Support LetterTune) */
+[data-theme="dark"] .card strong,
+[data-theme="dark"] strong {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .text-\[\#5faf3b\],
+[data-theme="dark"] .text-\[\\#5faf3b\] {
+  color: var(--success) !important;
+}
+
+[data-theme="dark"] .bg-\[rgba\(255\,255\,255\,0\.85\)\],
+[data-theme="dark"] .bg-\[rgba\(255\,255\,255\,0\.95\)\] {
+  background: var(--card) !important;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--muted) !important;
 }
 
 /* Spinner animation */
