@@ -85,30 +85,11 @@ body[data-theme="dark"] {
 [data-theme="dark"] .card {
   background: var(--card) !important;
   border-color: var(--border) !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(34, 197, 94, 0.15) !important;
-  outline: 1px solid rgba(34, 197, 94, 0.2) !important;
+  box-shadow: var(--shadow) !important;
 }
 
 [data-theme="dark"] .header-bg {
   background: #000000 !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 50px rgba(34, 197, 94, 0.2) !important;
-  outline: 1px solid rgba(34, 197, 94, 0.2) !important;
-}
-
-/* Glow/smoke around each component - stronger visibility */
-[data-theme="dark"] [class*="card-hover"] {
-  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3), 0 8px 32px rgba(0, 0, 0, 0.6) !important;
-  position: relative;
-}
-
-[data-theme="dark"] [class*="card-hover"]::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), transparent, rgba(34, 197, 94, 0.1));
-  z-index: -1;
-  filter: blur(8px);
 }
 
 [data-theme="dark"] .text-\[\#777e72\],
