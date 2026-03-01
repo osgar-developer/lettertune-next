@@ -31,7 +31,7 @@ export default function Header() {
           padding: '12px',
           border: '1px solid rgba(46, 125, 50, 0.15)',
           borderRadius: '14px 14px 0 0',
-          backgroundColor: 'var(--card)'
+          backgroundColor: isDark ? '#000000' : 'white'
         }}
       >
         <Image
