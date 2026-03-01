@@ -25,7 +25,7 @@ export default function Header() {
   return (
     <header>
       <div 
-        className="card card-hover" 
+        className="card card-hover header-bg" 
         style={{ 
           width: '100%', 
           padding: '12px',

@@ -88,6 +88,10 @@ body[data-theme="dark"] {
   box-shadow: var(--shadow) !important;
 }
 
+[data-theme="dark"] .header-bg {
+  background: #000000 !important;
+}
+
 [data-theme="dark"] .text-\[\#777e72\],
 [data-theme="dark"] .text-\[\\#777e72\] {
   color: var(--muted) !important;
