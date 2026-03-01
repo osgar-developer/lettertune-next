@@ -26,17 +26,17 @@
   --danger: #e5533d;
 }
 
-/* Dark mode */
+/* Dark mode - dramatic dark theme */
 [data-theme="dark"] {
-  --bg: #0f1419;
-  --card: rgba(30, 41, 50, 0.85);
-  --card-strong: rgba(30, 41, 50, 0.95);
+  --bg: #000000;
+  --card: rgba(30, 30, 30, 0.9);
+  --card-strong: rgba(40, 40, 40, 0.95);
 
-  --text: #e7e9ea;
-  --muted: #8b98a5;
+  --text: #ffffff;
+  --muted: #a0a0a0;
 
-  --border: rgba(231, 233, 234, 0.12);
-  --shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  --border: rgba(255, 255, 255, 0.15);
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
 
   --accent: #4ade80;
   --accent-soft: #22c55e;
@@ -66,9 +66,19 @@ body:not([data-theme="dark"]) {
 [data-theme="dark"] body,
 body[data-theme="dark"] {
   background:
-    radial-gradient(900px 600px at 15% 0%, rgba(34, 197, 94, 0.15), transparent 55%),
-    radial-gradient(800px 500px at 85% 25%, rgba(22, 163, 74, 0.12), transparent 50%),
-    linear-gradient(180deg, #0f1419, #1a1f26);
+    radial-gradient(900px 600px at 15% 0%, rgba(34, 197, 94, 0.08), transparent 55%),
+    radial-gradient(800px 500px at 85% 25%, rgba(22, 163, 74, 0.06), transparent 50%),
+    linear-gradient(180deg, #000000, #0a0a0a);
+}
+
+/* Dark mode headings */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #ffffff;
 }
 
 /* Spinner animation */
