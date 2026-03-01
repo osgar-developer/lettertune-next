@@ -135,6 +135,19 @@ body[data-theme="dark"] {
   color: var(--text) !important;
 }
 
+/* Dark mode button text */
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] [class*="bg-white"] {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: #ffffff !important;
+}
+
+/* Fix Clear button text in dark mode */
+[data-theme="dark"] button[style*="rgba(30, 29, 29"] {
+  color: #ffffff !important;
+}
+
 /* Spinner animation */
 @keyframes spin {
   to {
