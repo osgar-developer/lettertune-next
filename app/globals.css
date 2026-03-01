@@ -93,8 +93,9 @@ body[data-theme="dark"] {
   color: var(--muted) !important;
 }
 
-[data-theme="dark"] .text-\[\#1f2a1a\],
-[data-theme="dark"] .text-\[\\#1f2a1a\] {
+/* Force white text on titles (Inputs, Result, Support LetterTune) */
+[data-theme="dark"] .card strong,
+[data-theme="dark"] strong {
   color: #ffffff !important;
 }
 
