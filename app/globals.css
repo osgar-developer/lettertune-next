@@ -373,6 +373,7 @@ body[data-theme="dark"] {
 .scroll-progress-bar {
   position: relative;
   overflow: hidden;
+  border-radius: 0 0 12px 12px;
 }
 
 .scroll-progress-bar::after {
