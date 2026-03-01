@@ -28,7 +28,7 @@ export default function PrivacyPage() {
         <div className="w-full max-w-[800px] flex flex-col gap-[18px]">
           {/* Header */}
           <div 
-            className="card card-hover" 
+            className="card card-hover header-bg" 
             style={{ 
               width: '100%', 
               padding: '12px',
