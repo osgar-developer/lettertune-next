@@ -24,6 +24,7 @@ It supports 5 AI backends:
 - Five selectable AI providers
 - **Upload CV/resume** - Supports PDF, DOCX, TXT, and MD files
 - **Download as PDF** - Export generated cover letter as formatted PDF
+- **Dark/Light Mode** - Toggle between dark and light themes
 - Structured JSON output
 - Server-side API routes
 - Type-safe throughout
@@ -55,7 +56,7 @@ lettertune-next/
 │   ├── api/
 │   │   └── generate/
 │   │       └── route.ts      # API endpoint
-│   ├── globals.css            # Global styles
+│   ├── globals.css            # Global styles (including dark mode)
 │   ├── layout.tsx            # Root layout
 │   └── page.tsx             # Main page
 ├── components/
@@ -73,13 +74,15 @@ lettertune-next/
 │   ├── ModelSelector.tsx
 │   ├── ResultCard.tsx
 │   ├── StyleNotes.tsx
-│   └── TextInput.tsx
+│   ├── TextInput.tsx
+│   └── ThemeToggle.tsx       # Dark/Light mode toggle
 ├── lib/
 │   ├── ai.ts                # AI API integrations
 │   └── types.ts             # TypeScript interfaces
 ├── public/
 │   └── images/
-│       └── logo.png
+│       ├── logo.png         # Light mode logo
+│       └── logo_dark.png    # Dark mode logo
 ├── _old/                    # Archived Flask implementation
 ├── .env.example
 ├── next.config.js
