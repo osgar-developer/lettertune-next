@@ -123,6 +123,24 @@ body[data-theme="dark"] {
   color: var(--muted) !important;
 }
 
+/* Dark mode fixes for KeyMatches and StyleNotes */
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] [class*="bg-white"] {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .text-\[rgba\(0\,0\,0\,0\.82\)\],
+[data-theme="dark"] [class*="text-[rgba(0,0,0"] {
+  color: var(--text) !important;
+}
+
+/* Fix Clear button text in dark mode */
+[data-theme="dark"] button[style*="rgba(30, 29, 29"] {
+  color: #ffffff !important;
+}
+
 /* Spinner animation */
 @keyframes spin {
   to {
