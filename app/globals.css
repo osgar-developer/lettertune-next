@@ -95,7 +95,7 @@ body[data-theme="dark"] {
 
 [data-theme="dark"] .text-\[\#1f2a1a\],
 [data-theme="dark"] .text-\[\\#1f2a1a\] {
-  color: var(--text) !important;
+  color: #ffffff !important;
 }
 
 [data-theme="dark"] .text-\[\#5faf3b\],
