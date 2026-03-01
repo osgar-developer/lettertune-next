@@ -51,6 +51,9 @@ export default function DonationCard() {
         </p>
         <div style={{ width: '100%', textAlign: 'center' }}>
           <p className="text-[12px] text-[#777e72] m-0">Copyright © L.J Bergman</p>
+          <p className="text-[12px] text-[#777e72] m-0" style={{ marginTop: '4px' }}>
+            <a href="/privacy" style={{ color: '#318731', textDecoration: 'none' }}>Privacy Policy</a>
+          </p>
         </div>
       </div>
     </div>
